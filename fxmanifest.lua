@@ -4,12 +4,10 @@ game 'gta5'
 description 'QB-Anticheat'
 version '1.0.0'
 
-client_scripts {
-    'config.lua',    
-    'client/main.lua',
+shared_scripts { 
+	'@qb-core/import.lua',
+	'config.lua'
 }
 
-server_scripts {
-    'config.lua',    
-    'server/main.lua',
-}
+client_script 'client/main.lua'
+server_script 'server/main.lua'

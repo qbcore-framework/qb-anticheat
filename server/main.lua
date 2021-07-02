@@ -1,9 +1,3 @@
--- Load QBCore --
-
-QBCore = nil
-
-TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-
 -- Get permissions --
 
 QBCore.Functions.CreateCallback('qb-anticheat:server:GetPermissions', function(source, cb)
@@ -17,7 +11,7 @@ RegisterServerEvent('qb-anticheat:server:banPlayer')
 AddEventHandler('qb-anticheat:server:banPlayer', function(reason)
     local src = source
     TriggerClientEvent('chatMessage', -1, "QB Anti-Cheat", "error", GetPlayerName(src).." is verbannen voor: " ..reason )
-    QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(src).."', '"..GetPlayerIdentifiers(src)[1].."', '"..GetPlayerIdentifiers(src)[2].."', '"..GetPlayerIdentifiers(src)[3].."', '"..GetPlayerIdentifiers(src)[4].."', '"..reason.."', 2145913200, '"..GetPlayerName(src).."')")
+    exports.ghmattimysql:execute("INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(src).."', '"..GetPlayerIdentifiers(src)[1].."', '"..GetPlayerIdentifiers(src)[2].."', '"..GetPlayerIdentifiers(src)[3].."', '"..GetPlayerIdentifiers(src)[4].."', '"..reason.."', 2145913200, '"..GetPlayerName(src).."')")
     DropPlayer(src, "You have been flagged too many times by our anticheat and prevented from being banned from the server. Check our discord for more information: https://discord.gg/cYwKMKX")
 end)
 
