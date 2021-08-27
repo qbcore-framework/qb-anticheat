@@ -187,7 +187,7 @@ Citizen.CreateThread(function()
                 QBCore.Functions.TriggerCallback('qb-anticheat:server:HasWeaponInInventory', function(HasWeapon)
                     if not HasWeapon then
                         RemoveAllPedWeapons(PlayerPed, false)
-                        TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Weapon removed!", "orange", "** @everyone " ..GetPlayerName(player).. "**had a weapon on them that they did not have in his inventory. QB Anticheat has removed the weapon.")
+                        TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Weapon removed!", "orange", "** @everyone " ..GetPlayerName(player).. "** had a weapon on them that they did not have in his inventory. QB Anticheat has removed the weapon.")
                     end
                 end, WeaponInformation)
             end
