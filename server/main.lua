@@ -11,14 +11,14 @@ RegisterServerEvent('qb-anticheat:server:banPlayer')
 AddEventHandler('qb-anticheat:server:banPlayer', function(reason)
     local src = source
     TriggerEvent("qb-log:server:CreateLog", "anticheat", "Anti-Cheat", "white", GetPlayerName(src).." has been banned for "..reason, false)
-    exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (@name, @license, @discord, @ip, @reason, @expire, @bannedby)', {
-        ['@name'] = GetPlayerName(src),
-        ['@license'] = QBCore.Functions.GetIdentifier(src, 'license'),
-        ['@discord'] = QBCore.Functions.GetIdentifier(src, 'discord'),
-        ['@ip'] = QBCore.Functions.GetIdentifier(src, 'ip'),
-        ['@reason'] = reason,
-        ['@expire'] = 2145913200,
-        ['@bannedby'] = 'Anti-Cheat'
+    exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?)', {
+        GetPlayerName(src),
+        QBCore.Functions.GetIdentifier(src, 'license'),
+        QBCore.Functions.GetIdentifier(src, 'discord'),
+        QBCore.Functions.GetIdentifier(src, 'ip'),
+        reason,
+        2145913200,
+        'Anti-Cheat'
     })
     DropPlayer(src, "You have been banned for cheating. Check our Discord for more information: " .. QBCore.Config.Server.discord)
 end)
