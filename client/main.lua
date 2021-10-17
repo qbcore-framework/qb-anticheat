@@ -1,3 +1,4 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local group = Config.Group
 
 -- Check if is decorating --
