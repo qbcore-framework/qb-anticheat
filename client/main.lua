@@ -1,11 +1,11 @@
+local QBCore = exports['qb-core']:GetCoreObject()
 local group = Config.Group
 
 -- Check if is decorating --
 
 local IsDecorating = false
 
-RegisterNetEvent('qb-anticheat:client:ToggleDecorate')
-AddEventHandler('qb-anticheat:client:ToggleDecorate', function(bool)
+RegisterNetEvent('qb-anticheat:client:ToggleDecorate', function(bool)
   IsDecorating = bool
 end)
 
@@ -14,16 +14,14 @@ end)
 local flags = 0
 local isLoggedIn = false
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     QBCore.Functions.TriggerCallback('qb-anticheat:server:GetPermissions', function(UserGroup)
         group = UserGroup
     end)
     isLoggedIn = true
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerUnload')
-AddEventHandler('QBCore:Client:OnPlayerUnload', function()
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
     isLoggedIn = false
     IsDecorating = false
     flags = 0
@@ -219,8 +217,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled')
-AddEventHandler('qb-anticheat:client:NonRegisteredEventCalled', function(reason, CalledEvent)
+RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason, CalledEvent)
     local player = PlayerId()
 
     TriggerServerEvent('qb-anticheat:server:banPlayer', reason)

@@ -1,3 +1,5 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+
 -- Get permissions --
 
 QBCore.Functions.CreateCallback('qb-anticheat:server:GetPermissions', function(source, cb)
