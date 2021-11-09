@@ -140,7 +140,7 @@ Citizen.CreateThread(function()
             if GetUsingseethrough(true) then
                 if not IsPedInAnyHeli(ped) then
                     flags = flags + 1
-                    TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Thermalvision)**") 
+                    TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Thermalvision)**")
                 end
             end
         end
@@ -157,7 +157,7 @@ Citizen.CreateThread(function()
         local player = PlayerId()
         local veh = GetVehiclePedIsIn(ped)
         local DriverSeat = GetPedInVehicleSeat(veh, -1)
-        local plate = GetVehicleNumberPlateText(veh)
+        local plate = QBCore.Functions.GetPlate(veh)
 
         if isLoggedIn then
             if group == Config.Group then
