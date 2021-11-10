@@ -9,8 +9,7 @@ end)
 
 -- Execute ban --
 
-RegisterServerEvent('qb-anticheat:server:banPlayer')
-AddEventHandler('qb-anticheat:server:banPlayer', function(reason)
+RegisterNetEvent('qb-anticheat:server:banPlayer', function(reason)
     local src = source
     TriggerEvent("qb-log:server:CreateLog", "anticheat", "Anti-Cheat", "white", GetPlayerName(src).." has been banned for "..reason, false)
     exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
@@ -38,13 +37,6 @@ for x, v in pairs(Config.BlacklistedEvents) do
     end)
 end
 
-
-
--- RegisterServerEvent('banking:withdraw')
--- AddEventHandler('banking:withdraw', function(source)
---     NonRegisteredEventCalled('bank:withdraw', source)
--- end)
-
 QBCore.Functions.CreateCallback('qb-anticheat:server:HasWeaponInInventory', function(source, cb, WeaponInfo)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -58,3 +50,8 @@ QBCore.Functions.CreateCallback('qb-anticheat:server:HasWeaponInInventory', func
     end
     cb(retval)
 end)
+
+-- RegisterServerEvent('banking:withdraw')
+-- AddEventHandler('banking:withdraw', function(source)
+--     NonRegisteredEventCalled('bank:withdraw', source)
+-- end)
