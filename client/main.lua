@@ -29,9 +29,9 @@ end)
 
 -- Superjump --
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-        Citizen.Wait(500)
+        Wait(500)
 
         local ped = PlayerPedId()
         local player = PlayerId()
@@ -41,7 +41,7 @@ Citizen.CreateThread(function()
                 local firstCoord = GetEntityCoords(ped)
 
                 while IsPedJumping(ped) do
-                    Citizen.Wait(0)
+                    Wait(0)
                 end
 
                 local secondCoord = GetEntityCoords(ped)
@@ -58,9 +58,9 @@ end)
 
 -- Speedhack --
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-        Citizen.Wait(500)
+        Wait(500)
 
         local ped = PlayerPedId()
         local player = PlayerId()
@@ -89,9 +89,9 @@ end)
 
 -- Invisibility --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(10000)
+        Wait(10000)
 
         local ped = PlayerPedId()
         local player = PlayerId()
@@ -110,9 +110,9 @@ end)
 
 -- Nightvision --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(2000)
+        Wait(2000)
 
         local ped = PlayerPedId()
         local player = PlayerId()
@@ -130,9 +130,9 @@ end)
 
 -- Thermalvision --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(2000)
+        Wait(2000)
 
         local ped = PlayerPedId()
 
@@ -149,9 +149,9 @@ end)
 
 -- Spawned car --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(0)
 
         local ped = PlayerPedId()
         local player = PlayerId()
@@ -179,9 +179,9 @@ end)
 
 -- Check if ped has weapon in inventory --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(5000)
+        Wait(5000)
 
         if isLoggedIn then
 
@@ -204,9 +204,9 @@ end)
 
 -- Max flags reached = ban, log, explosion & break --
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(500)
+        Wait(500)
         local player = PlayerId()
         if flags >= Config.FlagsForBan then
             -- TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
@@ -219,7 +219,6 @@ end)
 
 RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason, CalledEvent)
     local player = PlayerId()
-
     TriggerServerEvent('qb-anticheat:server:banPlayer', reason)
     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player banned! (Not really of course, this is a test duuuhhhh)", "red", "** @everyone " ..GetPlayerName(player).. "** has event **"..CalledEvent.."tried to trigger (LUA injector!)")
 end)
