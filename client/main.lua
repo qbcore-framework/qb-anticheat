@@ -146,16 +146,19 @@ end)
 
 -- Spawned car --
 
+local function trim(plate)
+    if not plate then return nil end
+    return (string.gsub(plate, '^%s*(.-)%s*$', '%1'))
+end
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-
         local ped = PlayerPedId()
         local player = PlayerId()
         local veh = GetVehiclePedIsIn(ped)
         local DriverSeat = GetPedInVehicleSeat(veh, -1)
-        local plate = QBCore.Functions.GetPlate(veh)
-
+        local plate = trim(GetVehicleNumberPlateText(veh))
         if LocalPlayer.state.isLoggedIn then
             if group == Config.Group then
                 if IsPedInAnyVehicle(ped, true) then
