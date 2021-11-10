@@ -12,17 +12,14 @@ end)
 -- Few frequently used locals --
 
 local flags = 0
-local isLoggedIn = false
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     QBCore.Functions.TriggerCallback('qb-anticheat:server:GetPermissions', function(UserGroup)
         group = UserGroup
     end)
-    isLoggedIn = true
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    isLoggedIn = false
     IsDecorating = false
     flags = 0
 end)
@@ -36,7 +33,7 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and isLoggedIn then
+        if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if IsPedJumping(ped) then
                 local firstCoord = GetEntityCoords(ped)
 
@@ -70,7 +67,7 @@ Citizen.CreateThread(function()
         local jumping = IsPedJumping(ped)
         local falling = IsPedFalling(ped)
 
-        if group == Config.Group and isLoggedIn then
+        if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if not inveh then
                 if not ragdoll then
                     if not falling then
@@ -96,7 +93,7 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and isLoggedIn then
+        if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if not IsDecorating then
                 if not IsEntityVisible(ped) then
                     SetEntityVisible(ped, 1, 0)
@@ -117,7 +114,7 @@ Citizen.CreateThread(function()
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and isLoggedIn then
+        if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if GetUsingnightvision(true) then
                 if not IsPedInAnyHeli(ped) then
                     flags = flags + 1
@@ -136,7 +133,7 @@ Citizen.CreateThread(function()
 
         local ped = PlayerPedId()
 
-        if group == Config.Group and isLoggedIn then
+        if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if GetUsingseethrough(true) then
                 if not IsPedInAnyHeli(ped) then
                     flags = flags + 1
@@ -159,7 +156,7 @@ Citizen.CreateThread(function()
         local DriverSeat = GetPedInVehicleSeat(veh, -1)
         local plate = QBCore.Functions.GetPlate(veh)
 
-        if isLoggedIn then
+        if LocalPlayer.state.isLoggedIn then
             if group == Config.Group then
                 if IsPedInAnyVehicle(ped, true) then
                     for _, BlockedPlate in pairs(Config.BlacklistedPlates) do
@@ -183,7 +180,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(5000)
 
-        if isLoggedIn then
+        if LocalPlayer.state.isLoggedIn then
 
             local PlayerPed = PlayerPedId()
             local player = PlayerId()
