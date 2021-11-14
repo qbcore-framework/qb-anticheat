@@ -9,8 +9,7 @@ end)
 
 -- Execute ban --
 
-RegisterServerEvent('qb-anticheat:server:banPlayer')
-AddEventHandler('qb-anticheat:server:banPlayer', function(reason)
+RegisterNetEvent('qb-anticheat:server:banPlayer', function(reason)
     local src = source
     TriggerEvent("qb-log:server:CreateLog", "anticheat", "Anti-Cheat", "white", GetPlayerName(src).." has been banned for "..reason, false)
     exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
@@ -30,15 +29,12 @@ function NonRegisteredEventCalled(CalledEvent, source)
     TriggerClientEvent("qb-anticheat:client:NonRegisteredEventCalled", source, "Cheating", CalledEvent)
 end
 
-
 for x, v in pairs(Config.BlacklistedEvents) do
     RegisterServerEvent(v)
     AddEventHandler(v, function(source)
         NonRegisteredEventCalled(v, source)
     end)
 end
-
-
 
 -- RegisterServerEvent('banking:withdraw')
 -- AddEventHandler('banking:withdraw', function(source)
