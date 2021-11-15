@@ -166,8 +166,7 @@ Citizen.CreateThread(function()
                         if plate == BlockedPlate then
                             if DriverSeat == ped then
                                 DeleteVehicle(veh)
-                                TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
-                                TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "red", "** @everyone " ..GetPlayerName(player).. "** has been banned for cheating (Sat as driver in spawned vehicle with license plate **"..BlockedPlate..")**")
+                                TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Vehicule removed!", "orange", "** @everyone " ..GetPlayerName(player).. "** Sat as driver in spawned vehicle with license plate **"..BlockedPlate.."**")
                             end
                         end
                     end
