@@ -223,3 +223,17 @@ RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason
     TriggerServerEvent('qb-anticheat:server:banPlayer', reason)
     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player banned! (Not really of course, this is a test duuuhhhh)", "red", "** @everyone " ..GetPlayerName(player).. "** has event **"..CalledEvent.."tried to trigger (LUA injector!)")
 end)
+
+if Config.Antiresourcestop then
+
+AddEventHandler("onResourceStop", function(res, source)
+        local source = src
+        if res == GetCurrentResourceNme() then
+print(GetPlayerName(src) .. "Was kickaed for stoping" .. res)
+DropPlayer(src, "Stoping Resources.")
+            Citizen.Wait(100)
+            CancelEvent()
+        end 
+end)
+
+end
