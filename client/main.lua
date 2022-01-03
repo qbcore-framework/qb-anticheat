@@ -93,7 +93,7 @@ CreateThread(function()	-- Invisibility --
     end
 end)
 
-CreateThread(function() -- Nightvision --
+CreateThread(function() -- Nightvision & Thermalvision --
     while true do
         Wait(2000)
 
@@ -103,27 +103,16 @@ CreateThread(function() -- Nightvision --
         if group == Config.Group and LocalPlayer.state.isLoggedIn then
             if GetUsingnightvision(true) then
                 if not IsPedInAnyHeli(ped) then
-                    flags = flags + 1
+					flags = flags + 1
                     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Nightvision)**")
                 end
             end
-        end
-    end
-end)
-
-CreateThread(function() -- Thermalvision --
-    while true do
-        Wait(2000)
-
-        local ped = PlayerPedId()
-
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
-            if GetUsingseethrough(true) then
-                if not IsPedInAnyHeli(ped) then
-                    flags = flags + 1
-                    TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Thermalvision)**")
+			if GetUsingseethrough(true) then
+				if not IsPedInAnyHeli(ped) then
+					flags = flags + 1
+					TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Thermalvision)**")
                 end
-            end
+			end
         end
     end
 end)
@@ -202,15 +191,13 @@ RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason
 end)
 
 if Config.Antiresourcestop then
-
-AddEventHandler("onResourceStop", function(res, source)
+    AddEventHandler('onResourceStop', function(res, source)
         local source = src
         if res == GetCurrentResourceName() then
-print(GetPlayerName(src) .. "Was kickaed for stoping" .. res)
-DropPlayer(src, "Stoping Resources.")
+            TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Possible cheater detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** tried stopping resource: **"..res.."**")
+            DropPlayer(src, 'QB-ANTICHEAT: Resource stop')
             Citizen.Wait(100)
             CancelEvent()
-        end 
-end)
-
+        end
+    end)
 end
