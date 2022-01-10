@@ -12,7 +12,7 @@ end)
 RegisterNetEvent('qb-anticheat:server:banPlayer', function(reason)
     local src = source
     TriggerEvent("qb-log:server:CreateLog", "anticheat", "Anti-Cheat", "white", GetPlayerName(src).." has been banned for "..reason, false)
-    exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
+    MySQL.Async.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
         GetPlayerName(src),
         QBCore.Functions.GetIdentifier(src, 'license'),
         QBCore.Functions.GetIdentifier(src, 'discord'),
