@@ -170,7 +170,7 @@ CreateThread(function()	-- Check if ped has weapon in inventory --
             local CurrentWeapon = GetSelectedPedWeapon(PlayerPed)
             local WeaponInformation = QBCore.Shared.Weapons[CurrentWeapon]
 
-            if WeaponInformation["name"] ~= "weapon_unarmed" then
+            if WeaponInformation.name ~= "weapon_unarmed" then
                 QBCore.Functions.TriggerCallback('qb-anticheat:server:HasWeaponInInventory', function(HasWeapon)
                     if not HasWeapon then
                         RemoveAllPedWeapons(PlayerPed, false)
