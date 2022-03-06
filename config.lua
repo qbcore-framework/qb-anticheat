@@ -7,8 +7,6 @@ Config.FlagsForBan = 5
 Config.SuperJumpLength = 20.0
 Config.MaxSpeed = 13 
 
-Config.Antiresourcestop = true
-
 -- Set group --
 Config.Group = "user"
 
@@ -17,6 +15,17 @@ Config.BlacklistedPlates = {
     "BRUTAN",
 }
 
+-- AntiGodMode
+Config.AntiGodMode = {
+    Check1 = true, -- Method 1
+    Check2 = true -- Method 2
+}
+
+-- AntiDUIMenu
+Config.AntiDUI = true
+
+-- AntiMenuStyles (Blocking weird menu styles, which are not used in scripts)
+Config.AntiMenuStyles = true
 
 Config.BlacklistedEvents = {
     '211ef2f8-f09c-4582-91d8-087ca2130157',
