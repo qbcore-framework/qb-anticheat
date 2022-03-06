@@ -148,8 +148,8 @@ CreateThread(function() 	-- Spawned car --
                         if plate == BlockedPlate then
                             if DriverSeat == ped then
                                 DeleteVehicle(veh)
-                                TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
                                 TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "red", "** @everyone " ..GetPlayerName(player).. "** has been banned for cheating (Sat as driver in spawned vehicle with license plate **"..BlockedPlate..")**")
+                                TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
                             end
                         end
                     end
@@ -201,16 +201,58 @@ RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason
     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player banned! (Not really of course, this is a test duuuhhhh)", "red", "** @everyone " ..GetPlayerName(player).. "** has event **"..CalledEvent.."tried to trigger (LUA injector!)")
 end)
 
-if Config.Antiresourcestop then
+Citizen.CreateThread(function()
+    while true do 
+        Citizen.Wait(5000)
+        if Config.AntiGodMode.Check1 then
+            if not IsPlayerDead(PlayerId()) then
+                if GetPlayerInvincible_2(PlayerId()) then
+                    TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! GodMode", "red", "** @everyone " ..GetPlayerName(player).. "** Tried to use GodMode. (Method 1)")
+                    flags = flags + 1
+                end
+            end
+        end
+        if Config.AntiGodMode.Check2 then
+            if not IsPlayerDead(PlayerId()) then
+                local bull, coll, steam, p7, dr = GetEntityProofs(PlayerPedId())
+                if bull ~= 0 and coll ~= 0 and steam ~= 0 and p7 ~= 0 and dr ~= 0 then
+                    TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! GodMode", "red", "** @everyone " ..GetPlayerName(player).. "** Tried to use GodMode. (Method 2)")
+                    flags = flags + 1
+                end
+            end
+        end
+        if Config.AntiDUI then
+            local duis = {
+                {texturedict = "HydroMenu", texture = "HydroMenuHeader", name = "Hydro"},
+                {texturedict = "John", texture = "John2", name = "Sugar"},
+                {texturedict = "fm", texture = "menu_bg", name = "Fallout"},
+                {texturedict = "MM", texture = "menu_bg", name="MetrixMethods Fallout"},
+            }
+            
+            for i, duis in pairs(duis) do
+                if duis.x and duis.y then
+                    if GetTextureResolution(duis.texturedict, duis.texture).x == duis.x and GetTextureResolution(duis.texturedict, duis.texture).y == duis.y then
+                        TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! Mod Menu injection", "red", "** @everyone " ..GetPlayerName(player).. "** tried to inject the following mod menu: **`"..duis.name.."`")
+                        flags = flags + 1
+                    end
+                else 
+                    if GetTextureResolution(duis.texturedict, duis.texture).x ~= 4.0 then
+                        TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! Mod Menu injection", "red", "** @everyone " ..GetPlayerName(player).. "** tried to inject the following mod menu: **`"..duis.name.."`")
+                        flags = flags + 1
+                    end
+                end
+            end
+        end
 
-AddEventHandler("onResourceStop", function(res, source)
-        local source = src
-        if res == GetCurrentResourceName() then
-print(GetPlayerName(src) .. "Was kickaed for stoping" .. res)
-DropPlayer(src, "Stoping Resources.")
-            Citizen.Wait(100)
-            CancelEvent()
-        end 
+        if Config.AntiMenuStyles then
+            if HasStreamedTextureDictLoaded('fm') or HasStreamedTextureDictLoaded('rampage_tr_main') or HasStreamedTextureDictLoaded('MenyooExtras') then
+                TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! AntiMenuStyles injection", "red", "** @everyone " ..GetPlayerName(player).. "** tried to inject a menu with suspicious styles..")
+                flags = flags + 1
+            end
+            if HasStreamedTextureDictLoaded('shopui_title_graphics_franklin') or HasStreamedTextureDictLoaded('deadline') then
+                TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Player flagged! AntiMenuStyles injection", "red", "** @everyone " ..GetPlayerName(player).. "** tried to inject a menu with suspicious styles..")
+                flags = flags + 1
+            end
+        end
+    end
 end)
-
-end
