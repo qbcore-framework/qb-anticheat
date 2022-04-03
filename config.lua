@@ -3,14 +3,18 @@ Config = {}
 -- Set how many flags will result in a ban --
 Config.FlagsForBan = 5
 
--- Set values for flags -- 
+-- Set values for flags --
 Config.SuperJumpLength = 20.0
-Config.MaxSpeed = 13 
+Config.MaxSpeed = 13
 
 Config.Antiresourcestop = true
 
 -- Set group --
-Config.Group = "user"
+Config.IgnoredGroups = {
+    ['mod'] = true,
+    ['admin'] = true,
+    ['god'] = true
+}
 
 -- Blacklisted plates --
 Config.BlacklistedPlates = {
