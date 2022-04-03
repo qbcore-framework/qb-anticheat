@@ -220,7 +220,7 @@ end)
 
 if Config.Antiresourcestop then
     AddEventHandler("onResourceStop", function(res, source)
-        if res ~= GetCurrentResourceName() and not checkUser then
+        if res ~= GetCurrentResourceName() and checkUser then
             TriggerServerEvent('qb-anticheat:server:banPlayer', "Detected Stopping Resource.")
             Wait(100)
             CancelEvent()
