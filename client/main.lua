@@ -5,7 +5,13 @@ local flags = 0
 
 function GetPermissions()
     QBCore.Functions.TriggerCallback('qb-anticheat:server:GetPermissions', function(_group)
-        if Config.IgnoredGroups[_group] then checkUser = false end
+        for k,_ in pairs(_group) do
+            if Config.IgnoredGroups[k] then
+                checkUser = false
+                break
+            end
+            checkUser = true
+        end
     end)
 end
 
