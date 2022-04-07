@@ -1,19 +1,36 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local group = Config.Group
+local checkUser = nil
 local IsDecorating = false
 local flags = 0
+
+function GetPermissions()
+    QBCore.Functions.TriggerCallback('qb-anticheat:server:GetPermissions', function(_group)
+        for k,_ in pairs(_group) do
+            if Config.IgnoredGroups[k] then
+                checkUser = false
+                break
+            end
+            checkUser = true
+        end
+    end)
+end
+
+AddEventHandler('onResourceStart', function(resourceName)
+	if resourceName == GetCurrentResourceName() and checkUser == nil then
+		GetPermissions()
+	end
+end)
 
 RegisterNetEvent('qb-anticheat:client:ToggleDecorate', function(bool)
   IsDecorating = bool
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    QBCore.Functions.TriggerCallback('qb-anticheat:server:GetPermissions', function(UserGroup)
-        group = UserGroup
-    end)
+    GetPermissions()
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    checkUser = true
     IsDecorating = false
     flags = 0
 end)
@@ -25,7 +42,7 @@ CreateThread(function() -- Superjump --
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
+        if checkUser and LocalPlayer.state.isLoggedIn then
             if IsPedJumping(ped) then
                 local firstCoord = GetEntityCoords(ped)
 
@@ -57,7 +74,7 @@ CreateThread(function() -- Speedhack --
         local jumping = IsPedJumping(ped)
         local falling = IsPedFalling(ped)
 
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
+        if checkUser and LocalPlayer.state.isLoggedIn then
             if not inveh then
                 if not ragdoll then
                     if not falling then
@@ -81,7 +98,7 @@ CreateThread(function()	-- Invisibility --
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
+        if checkUser and LocalPlayer.state.isLoggedIn then
             if not IsDecorating then
                 if not IsEntityVisible(ped) then
                     SetEntityVisible(ped, 1, 0)
@@ -100,8 +117,8 @@ CreateThread(function() -- Nightvision --
         local ped = PlayerPedId()
         local player = PlayerId()
 
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
-            if GetUsingnightvision(true) then
+        if checkUser and LocalPlayer.state.isLoggedIn then
+            if GetUsingnightvision() then
                 if not IsPedInAnyHeli(ped) then
                     flags = flags + 1
                     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Nightvision)**")
@@ -117,8 +134,8 @@ CreateThread(function() -- Thermalvision --
 
         local ped = PlayerPedId()
 
-        if group == Config.Group and LocalPlayer.state.isLoggedIn then
-            if GetUsingseethrough(true) then
+        if checkUser and LocalPlayer.state.isLoggedIn then
+            if GetUsingseethrough() then
                 if not IsPedInAnyHeli(ped) then
                     flags = flags + 1
                     TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "orange", "** @everyone " ..GetPlayerName(player).. "** is flagged from anticheat! **(Flag "..flags.." /"..Config.FlagsForBan.." | Thermalvision)**")
@@ -142,7 +159,7 @@ CreateThread(function() 	-- Spawned car --
         local DriverSeat = GetPedInVehicleSeat(veh, -1)
         local plate = trim(GetVehicleNumberPlateText(veh))
         if LocalPlayer.state.isLoggedIn then
-            if group == Config.Group then
+            if checkUser then
                 if IsPedInAnyVehicle(ped, true) then
                     for _, BlockedPlate in pairs(Config.BlacklistedPlates) do
                         if plate == BlockedPlate then
@@ -202,15 +219,11 @@ RegisterNetEvent('qb-anticheat:client:NonRegisteredEventCalled', function(reason
 end)
 
 if Config.Antiresourcestop then
-
-AddEventHandler("onResourceStop", function(res, source)
-        local source = src
-        if res == GetCurrentResourceName() then
-print(GetPlayerName(src) .. "Was kickaed for stoping" .. res)
-DropPlayer(src, "Stoping Resources.")
-            Citizen.Wait(100)
+    AddEventHandler("onResourceStop", function(res, source)
+        if res ~= GetCurrentResourceName() and checkUser then
+            TriggerServerEvent('qb-anticheat:server:banPlayer', "Detected Stopping Resource.")
+            Wait(100)
             CancelEvent()
-        end 
-end)
-
+        end
+    end)
 end
