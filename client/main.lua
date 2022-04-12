@@ -158,16 +158,15 @@ CreateThread(function() 	-- Spawned car --
         local veh = GetVehiclePedIsIn(ped)
         local DriverSeat = GetPedInVehicleSeat(veh, -1)
         local plate = trim(GetVehicleNumberPlateText(veh))
-        if LocalPlayer.state.isLoggedIn then
-            if checkUser then
-                if IsPedInAnyVehicle(ped, true) then
-                    for _, BlockedPlate in pairs(Config.BlacklistedPlates) do
-                        if plate == BlockedPlate then
-                            if DriverSeat == ped then
-                                DeleteVehicle(veh)
-                                TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
-                                TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "red", "** @everyone " ..GetPlayerName(player).. "** has been banned for cheating (Sat as driver in spawned vehicle with license plate **"..BlockedPlate..")**")
-                            end
+
+        if checkUser and LocalPlayer.state.isLoggedIn then
+            if IsPedInAnyVehicle(ped, true) then
+                for _, BlockedPlate in pairs(Config.BlacklistedPlates) do
+                    if plate == BlockedPlate then
+                        if DriverSeat == ped then
+                            DeleteVehicle(veh)
+                            TriggerServerEvent("qb-anticheat:server:banPlayer", "Cheating")
+                            TriggerServerEvent("qb-log:server:CreateLog", "anticheat", "Cheat detected!", "red", "** @everyone " ..GetPlayerName(player).. "** has been banned for cheating (Sat as driver in spawned vehicle with license plate **"..BlockedPlate..")**")
                         end
                     end
                 end
@@ -180,8 +179,7 @@ CreateThread(function()	-- Check if ped has weapon in inventory --
     while true do
         Wait(5000)
 
-        if LocalPlayer.state.isLoggedIn then
-
+        if checkUser and LocalPlayer.state.isLoggedIn then
             local PlayerPed = PlayerPedId()
             local player = PlayerId()
             local CurrentWeapon = GetSelectedPedWeapon(PlayerPed)
